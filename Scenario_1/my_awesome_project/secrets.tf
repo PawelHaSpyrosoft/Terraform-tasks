@@ -4,21 +4,14 @@ resource "random_password" "password" {
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
-resource "aws_secretsmanager_secret" "admin_secret" {
-  name        = "${var.env}-db-admin-secret"
-  description = "Secret for DB admin user"
-  
-  tags = {
-    Environment = "${var.env}"
-  }
+resource "aws_secretsmanager_secret" "secret" {
+  name        = "TerrafornTaskSecret"
+  description = "This secret contains sensitive data"
 }
 
-resource "aws_secretsmanager_secret_version" "admin_secret_value" {
-  secret_id     = aws_secretsmanager_secret.admin_secret.id
-
+resource "aws_secretsmanager_secret_version" "secret_version" {
+  secret_id     = aws_secretsmanager_secret.secret.id
   secret_string = jsonencode({
-    username = "admin"
-    password = random_password.password.result
+    db_password = random_password.password.result
   })
-
 }
