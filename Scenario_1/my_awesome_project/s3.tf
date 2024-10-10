@@ -3,34 +3,41 @@ module "s3_static_page" {
   version = "4.2.0"
 
   bucket = "${var.env}-static-page-for-cosmos-space-6729913"
-  acl    = "public-read"
 
-  attach_policy = true
-  policy        = data.aws_iam_policy_document.s3_bucket_policy.json
 
   website = {
-    index_document = file("${path.module}/files/index.html")
+    index_document = "index.html"
   }
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+
 
 }
 
+resource "aws_s3_bucket_policy" "public_access" {
+  bucket = module.s3_static_page.s3_bucket_id
 
-data "aws_iam_policy_document" "s3_bucket_policy" {
-  statement {
-    actions   = ["s3:GetObject"]
-    resources = ["${module.s3_static_page.s3_bucket_arn}/*"]
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-  }
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "PublicReadGetObject"
+        Effect    = "Allow"
+        Principal = "*"
+        Action    = "s3:GetObject"
+        Resource  = "${module.s3_static_page.s3_bucket_arn}/*"
+      }
+    ]
+  })
 }
-
 
 resource "aws_s3_object" "index" {
-  bucket       = module.s3_static_page.s3_bucket_arn
+  bucket       = module.s3_static_page.s3_bucket_id
   key          = "index.html"
   source       = "${path.module}/files/index.html"
   content_type = "text/html"
-  acl          = "public-read"
 }
+

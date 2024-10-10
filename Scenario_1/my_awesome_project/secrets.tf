@@ -5,7 +5,7 @@ resource "random_password" "password" {
 }
 
 resource "aws_secretsmanager_secret" "secret" {
-  name        = "TerrafornTaskSecret"
+  name        = "TerraformTaskSecret"
   description = "This secret contains sensitive data"
 }
 
