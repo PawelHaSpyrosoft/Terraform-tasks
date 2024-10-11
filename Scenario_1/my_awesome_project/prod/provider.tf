@@ -1,13 +1,13 @@
 provider "aws" {
   region                   = "eu-central-1"
-  # shared_config_files      = ["$HOME/.aws/credentials"]
-  # shared_credentials_files = ["$HOME/.aws/credentials"]
-  # profile = "dev"
+  shared_config_files      = ["$HOME/.aws/credentials"]
+  shared_credentials_files = ["$HOME/.aws/credentials"]
+  profile = "prod"
 
   default_tags {
     tags = {
       ManagedByTerraform   = "YES"
-      environment          = "dev"
+      environment          = "prod"
     }
   }
 }
@@ -15,9 +15,9 @@ provider "aws" {
 terraform {
   backend "s3" {
     shared_credentials_file = "$HOME/.aws/credentials"
-    profile                 = "dev"
+    profile                 = "prod"
     bucket                  = "my-remote-bucket-terraform-task-9123"
-    key                     = "dev/terraform.state"
+    key                     = "prod/terraform.state"
     region                  = "eu-central-1"
     encrypt                 = true
     dynamodb_table          = "state-locks"

@@ -1,5 +1,5 @@
 resource "aws_iam_role" "lambda_exec_role" {
-  name = "${var.env}_lambda_exec_role"
+  name = "${terraform.workspace}_lambda_exec_role"
 
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
 }
@@ -29,7 +29,7 @@ resource "aws_lambda_permission" "api_gateway_invoke" {
 
 resource "aws_lambda_function" "lambda" {
   filename         = "${path.module}/files/lambda_code.zip"
-  function_name    = "${var.env}_terraform_task_lambda"
+  function_name    = "${terraform.workspace}_terraform_task_lambda"
   role             = aws_iam_role.lambda_exec_role.arn
   handler          = "lambda_code.lambda_handler"
   runtime          = "python3.8"
@@ -47,7 +47,7 @@ resource "aws_lambda_function" "lambda" {
 
 
 resource "aws_iam_policy" "lambda_dynamodb_policy" {
-  name        = "${var.env}-Lambda-DynamoDB-Policy"
+  name        = "${terraform.workspace}-Lambda-DynamoDB-Policy"
   path        = "/"
   description = "IAM policy for Lambda to access DynamoDB and Secrets Manager"
 
