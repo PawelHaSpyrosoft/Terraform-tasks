@@ -14,8 +14,8 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    shared_credentials_file = "$HOME/.aws/credentials"
-    profile                 = "dev"
+    # shared_credentials_file = "$HOME/.aws/credentials"
+    # profile                 = "dev"
     bucket                  = "my-remote-bucket-terraform-task-9123"
     key                     = "dev/terraform.state"
     region                  = "eu-central-1"
