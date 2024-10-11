@@ -1,0 +1,92 @@
+name: Terraform CI/CD
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    name: Terraform Pipeline
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.7.0  # Replace with the Terraform version you are using
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}  # Make sure to set AWS_REGION as a GitHub secret
+
+    - name: Terraform Init and Plan for Dev
+      run: |
+        cd Scenario_1/my_awesome_project/dev
+        terraform init
+        terraform plan
+
+    - name: Manual Approval for Dev
+      uses: softprops/turnstyle@v1
+      with:
+        gate: wait
+
+    - name: Terraform Apply for Dev
+      run: |
+        cd Scenario_1/my_awesome_project/dev
+        terraform apply -auto-approve
+
+    - name: Terraform Init and Plan for Test
+      run: |
+        cd Scenario_1/my_awesome_project/test
+        terraform init
+        terraform plan
+
+    - name: Manual Approval for Test
+      uses: softprops/turnstyle@v1
+      with:
+        gate: wait
+
+    - name: Terraform Apply for Test
+      run: |
+        cd Scenario_1/my_awesome_project/test
+        terraform apply -auto-approve
+
+    - name: Terraform Init and Plan for UAT
+      run: |
+        cd Scenario_1/my_awesome_project/uat
+        terraform init
+        terraform plan
+
+    - name: Manual Approval for UAT
+      uses: softprops/turnstyle@v1
+      with:
+        gate: wait
+
+    - name: Terraform Apply for UAT
+      run: |
+        cd Scenario_1/my_awesome_project/uat
+        terraform apply -auto-approve
+
+    - name: Terraform Init and Plan for Prod
+      run: |
+        cd Scenario_1/my_awesome_project/prod
+        terraform init
+        terraform plan
+
+    - name: Manual Approval for Prod
+      uses: softprops/turnstyle@v1
+      with:
+        gate: wait
+
+    - name: Terraform Apply for Prod
+      run: |
+        cd Scenario_1/my_awesome_project/prod
+        terraform apply -auto-approve
