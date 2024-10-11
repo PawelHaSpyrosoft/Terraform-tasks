@@ -33,10 +33,9 @@ jobs:
         terraform init
         terraform plan
 
-    - name: Manual Approval for Dev
-      uses: softprops/turnstyle@v1
-      with:
-        gate: wait
+    - name: Manual Workflow Approval
+      uses: trstringer/manual-approval@v1.9.1
+            
 
     - name: Terraform Apply for Dev
       run: |
@@ -49,10 +48,8 @@ jobs:
         terraform init
         terraform plan
 
-    - name: Manual Approval for Test
-      uses: softprops/turnstyle@v1
-      with:
-        gate: wait
+    - name: Manual Workflow Approval
+      uses: trstringer/manual-approval@v1.9.1
 
     - name: Terraform Apply for Test
       run: |
@@ -65,10 +62,8 @@ jobs:
         terraform init
         terraform plan
 
-    - name: Manual Approval for UAT
-      uses: softprops/turnstyle@v1
-      with:
-        gate: wait
+    - name: Manual Workflow Approval
+      uses: trstringer/manual-approval@v1.9.1
 
     - name: Terraform Apply for UAT
       run: |
@@ -81,10 +76,8 @@ jobs:
         terraform init
         terraform plan
 
-    - name: Manual Approval for Prod
-      uses: softprops/turnstyle@v1
-      with:
-        gate: wait
+    - name: Manual Workflow Approval
+      uses: trstringer/manual-approval@v1.9.1
 
     - name: Terraform Apply for Prod
       run: |
