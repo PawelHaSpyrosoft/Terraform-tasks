@@ -35,6 +35,9 @@ jobs:
 
     - name: Manual Workflow Approval
       uses: trstringer/manual-approval@v1.9.1
+      with:
+          secret: ${{ github.TOKEN }}
+          approvers: PawelHaSpyrosoft
             
 
     - name: Terraform Apply for Dev
@@ -50,6 +53,9 @@ jobs:
 
     - name: Manual Workflow Approval
       uses: trstringer/manual-approval@v1.9.1
+      with:
+          secret: ${{ github.TOKEN }}
+          approvers: PawelHaSpyrosoft
 
     - name: Terraform Apply for Test
       run: |
@@ -64,6 +70,9 @@ jobs:
 
     - name: Manual Workflow Approval
       uses: trstringer/manual-approval@v1.9.1
+      with:
+          secret: ${{ github.TOKEN }}
+          approvers: PawelHaSpyrosoft
 
     - name: Terraform Apply for UAT
       run: |
@@ -78,6 +87,9 @@ jobs:
 
     - name: Manual Workflow Approval
       uses: trstringer/manual-approval@v1.9.1
+      with:
+          secret: ${{ github.TOKEN }}
+          approvers: PawelHaSpyrosoft
 
     - name: Terraform Apply for Prod
       run: |
